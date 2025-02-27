@@ -25,6 +25,9 @@ class Teacher(GeeksPeople):
         self.teacher_id = teacher_id
         self.group_where_teach = group_where_teach
 
+    def teach(self):
+        print(f"Преподователь: {self.name}\nПерподаёт в группе под названием: {self.group_where_study}")
+
 
 class Admin(GeeksPeople):
     def __init__(self, name, email, phone_number, admin_id):
