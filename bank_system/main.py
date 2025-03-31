@@ -112,11 +112,18 @@ class Bank:
                 print("Всего доброго")
                 break
             elif command == 1:
-                
+                client.all_clients()
+            elif command == 2:
+                client.show_balance()
+            elif command == 3:
+                client.put_money()
+            elif command == 4:
+                client.take_money()
+            elif command == 5:
+                client.register()
+            else:
+                print("Неверный ввод, пожалуйста попробуйте снова")
 
 
 client = Bank()
-# client.register()
-# client.put_money()
-# client.take_money()
-client.show_balance()
+client.main()
