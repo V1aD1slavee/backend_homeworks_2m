@@ -55,12 +55,37 @@ class Bank:
         user = cursor.fetchone()
 
         if user:
-            cursor.execute("UPDATE clients SET balance = ? WHERE id = ?", (sum, user_id))
+            cursor.execute("UPDATE clients SET balance = balance + ? WHERE id = ?", (sum, user_id))
             connect.commit()
             print(f"Баланс клиента {user} успешно пополнен")
         else:
             print("Клиента с таким id не существует!")
 
+    def take_money(self):
+        user_id = int(input("\nВведите id клиента: "))
+        sum = int(input("Введите сумму которую хотите снять: "))
+
+        cursor.execute(f"SELECT id, name, surname FROM clients WHERE id == {user_id}")
+        user = cursor.fetchone()
+
+        cursor.execute(f"SELECT balance FROM clients WHERE id == {user_id}")
+        balance = cursor.fetchone()
+        balance = balance[0]
+
+        if user:
+            if sum < balance:
+                cursor.execute("UPDATE clients SET balance = balance - ? WHERE id = ?", (sum, user_id))
+                connect.commit()
+                print(f"Деньги успешно были сняты со счёта {user}")
+                rest = balance - sum
+                print(f"Баланс счёта составляет {rest} сом")
+            else:
+                print(f"На счёте {user} недостаточно средств!")
+        else:
+            print("Клиента с таким номером id не существует!")
+
+
 client = Bank()
 client.register()
 client.put_money()
+client.take_money()
