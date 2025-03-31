@@ -47,6 +47,15 @@ class Bank:
             connect.commit()
             print(f"Пользователь {user_name} успешно добавлен!")
 
+    def show_balance(self):
+        user_id = int(input("\nВведите id клиента: "))
+
+        cursor.execute("SELECT balance FROM clients WHERE id = ?", (user_id))
+        balance = cursor.fetchone()
+        balance = balance[0]
+
+        print(f"На вашем балансе {balance} сом")
+
     def put_money(self):
         user_id = int(input("\nВведите id клиента: "))
         sum = int(input("Введите сумму которую хотите положить на счёт: "))
