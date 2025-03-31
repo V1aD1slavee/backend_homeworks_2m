@@ -47,14 +47,23 @@ class Bank:
             connect.commit()
             print(f"Пользователь {user_name} успешно добавлен!")
 
+    def all_clients(self):
+        cursor.execute("SELECT id, name, surname, age, home_adress FROM clients")
+        clients = cursor.fetchall()
+        print(clients)
+
     def show_balance(self):
         user_id = int(input("\nВведите id клиента: "))
+        cursor.execute(f"SELECT id FROM clients WHERE id == {user_id}")
+        user = cursor.fetchone()
 
-        cursor.execute("SELECT balance FROM clients WHERE id = ?", (user_id))
-        balance = cursor.fetchone()
-        balance = balance[0]
-
-        print(f"На вашем балансе {balance} сом")
+        if user:
+            cursor.execute(f"SELECT balance FROM clients WHERE id = {user_id}")
+            balance = cursor.fetchone()
+            balance = balance[0]
+            print(f"На вашем балансе {balance} сом")
+        else:
+            print("Клиента с таким id не существует!")
 
     def put_money(self):
         user_id = int(input("\nВведите id клиента: "))
@@ -93,8 +102,21 @@ class Bank:
         else:
             print("Клиента с таким номером id не существует!")
 
+    def main(self):
+        while True:
+            print("-------------------ГЛАВНОЕ МЕНЮ-------------------")
+            print("Выберите действие")
+            command = int(input("0-выход, 1-все клиенты, 2-баланс \n3-пополнить баланс, 4-снять деньги, 5-регистрация"))
+            
+            if command == 0:
+                print("Всего доброго")
+                break
+            elif command == 1:
+                
+
 
 client = Bank()
-client.register()
-client.put_money()
-client.take_money()
+# client.register()
+# client.put_money()
+# client.take_money()
+client.show_balance()
