@@ -47,5 +47,20 @@ class Bank:
             connect.commit()
             print(f"Пользователь {user_name} успешно добавлен!")
 
+    def put_money(self):
+        user_id = int(input("\nВведите id клиента: "))
+        sum = int(input("Введите сумму которую хотите положить на счёт: "))
+
+        cursor.execute(f"SELECT id, name, surname FROM clients WHERE id == {user_id}")
+        user = cursor.fetchone()
+
+        if user:
+            cursor.execute("UPDATE clients SET balance = ? WHERE id = ?", (sum, user_id))
+            connect.commit()
+            print(f"Баланс клиента {user} успешно пополнен")
+        else:
+            print("Клиента с таким id не существует!")
+
 client = Bank()
 client.register()
+client.put_money()
