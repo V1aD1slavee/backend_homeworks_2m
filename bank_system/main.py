@@ -52,10 +52,10 @@ class Bank:
         clients = cursor.fetchall()
         print(clients)
 
-    
     def show_vip(self):
-        pass
-
+        cursor.execute("SELECT id, name, surname, age, balance, home_adress FROM clients WHERE is_vip = True")
+        vip = cursor.fetchall()
+        print(vip)
 
     def update_is_vip_status(self):
         cursor.execute("SELECT * FROM clients WHERE balance > 200000")
@@ -65,7 +65,6 @@ class Bank:
             vip_id = vip[0]
             cursor.execute("UPDATE clients SET is_vip = ? WHERE id = ?", (True, vip_id))
             connect.commit()
-
 
     def show_balance(self):
         user_id = int(input("\nВведите id клиента: "))
@@ -79,7 +78,6 @@ class Bank:
             print(f"На вашем балансе {balance} сом")
         else:
             print("Клиента с таким id не существует!")
-
 
     def put_money(self):
         user_id = int(input("\nВведите id клиента: "))
@@ -95,7 +93,6 @@ class Bank:
         else:
             print("Клиента с таким id не существует!")
 
-
     def take_money(self):
         user_id = int(input("\nВведите id клиента: "))
         sum = int(input("Введите сумму которую хотите снять: "))
@@ -106,7 +103,6 @@ class Bank:
         cursor.execute(f"SELECT balance FROM clients WHERE id == {user_id}")
         balance = cursor.fetchone()
         balance = balance[0]
-
 
         if user:
             if sum < balance:
@@ -119,7 +115,6 @@ class Bank:
                 print(f"На счёте {user} недостаточно средств!")
         else:
             print("Клиента с таким номером id не существует!")
-
 
     def delete_client(self):
         user_id = int(input("\nВведите id клиента: "))
@@ -141,13 +136,12 @@ class Bank:
         else:
             print("Клиента с таким номером id не существует!")
 
-
     def main(self):
         while True:
             self.update_is_vip_status()
             print("-------------------ГЛАВНОЕ МЕНЮ-------------------")
             print("Выберите действие")
-            print("0-выход, 1-все клиенты, 2-баланс \n3-пополнить баланс, 4-снять деньги, 5-регистрация, 6-удалить клиента")
+            print("0-выход, 1-все клиенты, 2-баланс \n3-пополнить баланс, 4-снять деньги, 5-регистрация, 6-удалить клиента, 7-VIP клиенты")
             command = int(input(": "))
 
             if command == 0:
@@ -165,6 +159,8 @@ class Bank:
                 client.register()
             elif command == 6:
                 client.delete_client()
+            elif command == 7:
+                client.show_vip()
             else:
                 print("Неверный ввод, пожалуйста попробуйте снова")
 
