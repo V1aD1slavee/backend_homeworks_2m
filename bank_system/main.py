@@ -102,11 +102,31 @@ class Bank:
         else:
             print("Клиента с таким номером id не существует!")
 
+    def delete_client(self):
+        user_id = int(input("\nВведите id клиента: "))
+
+        cursor.execute(f"SELECT id, name, surname FROM clients WHERE id == {user_id}")
+        user = cursor.fetchone()
+
+        if user:
+            print(f"Вы уверены что хотите удалить клиента по имени {user}")
+            answer = int(input("0-Да  1-Нет: "))
+            if answer == 0:
+                cursor.execute(f"DELETE FROM clients WHERE id == {user_id}")
+                connect.commit()
+                print(f"Клиент под именем {user} был успешно удалён")
+            elif answer == 1:
+                print("Спасибо за то что остаётесь с нами!")
+            else:
+                print("Не правильный ответ, попробуйте снова!")
+        else:
+            print("Клиента с таким номером id не существует!")
+
     def main(self):
         while True:
             print("-------------------ГЛАВНОЕ МЕНЮ-------------------")
             print("Выберите действие")
-            print("0-выход, 1-все клиенты, 2-баланс \n3-пополнить баланс, 4-снять деньги, 5-регистрация")
+            print("0-выход, 1-все клиенты, 2-баланс \n3-пополнить баланс, 4-снять деньги, 5-регистрация, 6-удалить клиента")
             command = int(input(": "))
 
             if command == 0:
@@ -122,6 +142,8 @@ class Bank:
                 client.take_money()
             elif command == 5:
                 client.register()
+            elif command == 6:
+                client.delete_client()
             else:
                 print("Неверный ввод, пожалуйста попробуйте снова")
 
