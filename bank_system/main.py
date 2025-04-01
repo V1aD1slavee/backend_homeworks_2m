@@ -55,7 +55,11 @@ class Bank:
     def show_vip(self):
         cursor.execute("SELECT id, name, surname, age, balance, home_adress FROM clients WHERE is_vip = True")
         vip = cursor.fetchall()
-        print(vip)
+        
+        if vip:
+            print(vip)
+        else:
+            print("На данный момент клиентов со статусов VIP нет")
 
     def update_is_vip_status(self):
         cursor.execute("SELECT * FROM clients WHERE balance > 200000")
@@ -65,6 +69,15 @@ class Bank:
             vip_id = vip[0]
             cursor.execute("UPDATE clients SET is_vip = ? WHERE id = ?", (True, vip_id))
             connect.commit()
+
+        cursor.execute("SELECT * FROM clients WHERE balance < 200000")
+        no_vip = cursor.fetchone()
+
+        if no_vip:
+            no_vip_id = no_vip[0]
+            cursor.execute("UPDATE clients SET is_vip = ? WHERE id = ?", (False, no_vip_id))
+            connect.commit()
+
 
     def show_balance(self):
         user_id = int(input("\nВведите id клиента: "))
